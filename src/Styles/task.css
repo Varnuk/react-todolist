@@ -1,0 +1,72 @@
+.single-task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  margin: 10px 10px 0 10px;
+  background-color: var(--light);
+  background: linear-gradient(to left, var(--light) 50%, yellowgreen 50%) right;
+  background-size: 200% 100%;
+  text-decoration: none;
+}
+
+.complete {
+  background: linear-gradient(to left, var(--light) 50%, yellowgreen 50%) left;
+  background-size: 200% 100%;
+  transition: all 1.2s ease;
+  text-decoration: line-through;
+}
+
+.single-task-edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  margin: 10px 10px 0 10px;
+  border: 3px solid var(--light);
+}
+
+.control-tools {
+  background-color: var(--light);
+}
+.container-tasks {
+  background-color: #fff;
+  color: var(--deep-dark);
+  padding: 10px;
+}
+
+.task-control button {
+  border: none;
+  background-color: var(--light);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding: 15px 10px;
+  display: inline-block;
+}
+
+.task-control button:hover {
+  background-color: #ddd;
+}
+
+.task-accept {
+  color: rgb(15, 179, 69);
+}
+
+.task-edit {
+  color: rgb(0, 132, 255);
+}
+
+.task-remove {
+  color: orangered;
+}
+
+.task-change-edit {
+  margin: 0;
+  padding-left: 10px;
+  width: 90%;
+  font-size: 1rem;
+}
+
+.completed {
+  text-decoration: "line-through";
+}

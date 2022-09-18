@@ -1,21 +1,15 @@
-interface Props {
-  editValue: string;
-  setEditValue: React.Dispatch<React.SetStateAction<string>>;
-  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  changeTaskState(id: string, body?: string): void;
-  id: string;
-}
+import { TaskChangeProps } from "./../types/types";
 
-const ChangeTask = (props: Props) => {
+const ChangeTask = (props: TaskChangeProps) => {
   function handleEditTask(event: { key: string }) {
     if (event.key === "Enter") {
       props.setIsEdit(false);
-      props.changeTaskState(props.id, props.editValue);
+      props.changeTaskBody(props.id, props.editValue);
     }
   }
   return (
     <input
-      className="task--edit"
+      className="task-change-edit"
       type="text"
       placeholder="Edit your task here..."
       value={props.editValue}

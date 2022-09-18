@@ -2,17 +2,11 @@ import logoPicture from "./image/logo192.png";
 import Tasks from "./Components/Tasks";
 import React, { useState, useEffect, SetStateAction } from "react";
 import { nanoid } from "nanoid";
-
-interface Task {
-  readonly id: string;
-  body: string;
-  completed: boolean;
-  key: string;
-}
+import { Task } from "./types/types";
 
 const App: React.FC = () => {
-  const [taskArray, setTaskArray] = useState<Task[]>(
-    () => JSON.parse(localStorage.getItem("tasks") || "") || []
+  const [taskArray, setTaskArray] = useState<Task[]>(() =>
+    JSON.parse(localStorage.getItem("tasks") || "[]")
   );
 
   const [taskInputValue, setTaskInputValue] = useState("");
@@ -28,34 +22,41 @@ const App: React.FC = () => {
   }
 
   function createNewTask(taskText: string) {
-    if (taskText.length < 1) return;
-    const tempId = nanoid();
-    const newTask = {
-      id: tempId,
-      body: taskText,
-      completed: false,
-      key: tempId,
-    };
-
-    console.log(newTask);
-
-    setTaskArray((prev: Task[]) => [newTask, ...prev]);
-    setTaskInputValue("");
+    if (taskText.length > 0) {
+      const tempId = nanoid();
+      const newTask = {
+        id: tempId,
+        body: taskText,
+        completed: false,
+      };
+      setTaskArray((prev: Task[]) => [newTask, ...prev]);
+      setTaskInputValue("");
+    }
   }
 
-  function changeTaskState(id: string, body: string) {
+  function changeTaskState(id: string) {
     setTaskArray((oldTasks: Task[]) => {
-      // let thatTask = oldTasks.find((task: Task) => task.id === id);
-      // thatTask!.completed = !thatTask!.completed;
-      // return oldTasks.map((single) => single);
       const newArray = [];
       for (let i = 0; i < oldTasks.length; i++) {
         const oldTask = taskArray[i];
-
         if (oldTask.id === id) {
-          if (body === undefined)
-            newArray.push({ ...oldTask, completed: !oldTask.completed });
-          else newArray.push({ ...oldTask, body: body });
+          newArray.push({ ...oldTask, completed: !oldTask.completed });
+        } else {
+          newArray.push(oldTask);
+        }
+      }
+      return newArray;
+    });
+  }
+
+  function changeTaskBody(id: string, body: string) {
+    if (body.length < 1) return;
+    setTaskArray((oldTasks: Task[]) => {
+      const newArray = [];
+      for (let i = 0; i < oldTasks.length; i++) {
+        const oldTask = taskArray[i];
+        if (oldTask.id === id) {
+          newArray.push({ ...oldTask, body: body });
         } else {
           newArray.push(oldTask);
         }
@@ -71,14 +72,13 @@ const App: React.FC = () => {
   }
 
   const tasksToRender = taskArray.map((singleTask: Task) => (
-    <>
-      <Tasks
-        deleteTask={deleteTask}
-        changeTaskState={changeTaskState}
-        task={singleTask}
-        key={singleTask.id}
-      />
-    </>
+    <Tasks
+      deleteTask={deleteTask}
+      changeTaskState={changeTaskState}
+      changeTaskBody={changeTaskBody}
+      task={singleTask}
+      key={singleTask.id}
+    />
   ));
 
   return (
